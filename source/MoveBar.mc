@@ -4,6 +4,8 @@ using Toybox.Application as App;
 using Toybox.ActivityMonitor as ActivityMonitor;
 using Toybox.Graphics;
 
+const MAX_TIMETORECOVERY = 48;
+
 class MoveBar extends Ui.Drawable {
 
 	private var mX, mY, mBaseWidth, mHeight, mSeparator;
@@ -57,7 +59,7 @@ class MoveBar extends Ui.Drawable {
 		}
 
 		var info = ActivityMonitor.getInfo();
-		var currentMoveBarLevel = info.moveBarLevel;
+		var currentMoveBarLevel = info.timeToRecovery;
 
 		// Calculate current width here, now that DC is accessible.
 		// Balance head/tail positions in full width mode.
@@ -138,7 +140,7 @@ class MoveBar extends Ui.Drawable {
 		var moveBarStyle = App.getApp().getProperty("MoveBarStyle");
 
 		// One-based, to correspond with move bar level (zero means no bars).
-		for (var i = 1; i <= ActivityMonitor.MOVE_BAR_LEVEL_MAX; ++i) {
+		for (var i = 1; i <= MAX_TIMETORECOVERY; ++i) {
 
 			// First bar is double width.
 			thisBarWidth = (i == 1) ? (2 * barWidth) : barWidth;
@@ -165,7 +167,7 @@ class MoveBar extends Ui.Drawable {
 
 	function getBarWidth() {
 		// Maximum number of bars actually shown.
-		var numBars = ActivityMonitor.MOVE_BAR_LEVEL_MAX - ActivityMonitor.MOVE_BAR_LEVEL_MIN;
+		var numBars = MAX_TIMETORECOVERY - 0;
 
 		// Subtract tail width, and total separator width.
 		var availableWidth = mCurrentWidth - mTailWidth - ((numBars - 1) * mSeparator);

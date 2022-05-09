@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "CrystalRecovery",
+			"path": "../CrystalFaceRecovery/CrystalRecovery"
+		}
+	],
+	"settings": {}
+}
