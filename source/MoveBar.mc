@@ -4,7 +4,8 @@ using Toybox.Application as App;
 using Toybox.ActivityMonitor as ActivityMonitor;
 using Toybox.Graphics;
 
-const MAX_TIMETORECOVERY = 48;
+// 96h is the maximium 96/10 = 9
+const MAX_TIMETORECOVERY = 9;
 
 class MoveBar extends Ui.Drawable {
 
@@ -59,7 +60,11 @@ class MoveBar extends Ui.Drawable {
 		}
 
 		var info = ActivityMonitor.getInfo();
-		var currentMoveBarLevel = info.timeToRecovery;
+		var currentMoveBarLevel = info.timeToRecovery / 10;
+
+		if (currentMoveBarLevel < 1) {
+			currentMoveBarLevel = 1;
+		}
 
 		// Calculate current width here, now that DC is accessible.
 		// Balance head/tail positions in full width mode.
