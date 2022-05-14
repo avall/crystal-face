@@ -4,8 +4,8 @@ using Toybox.Application as App;
 using Toybox.ActivityMonitor as ActivityMonitor;
 using Toybox.Graphics;
 
-// 96h is the maximium 96/10 = 9
-const MAX_TIMETORECOVERY = 9;
+// 50h is the maximium 50/10 = 5
+const MAX_TIMETORECOVERY = 5;
 
 class MoveBar extends Ui.Drawable {
 
@@ -53,18 +53,14 @@ class MoveBar extends Ui.Drawable {
 			mBufferNeedsRecreate = true;
 		}
 	}
-	
+
 	function draw(dc) {
 		if (App.getApp().getProperty("MoveBarStyle") == 2 /* HIDDEN */) {
 			return;
 		}
 
 		var info = ActivityMonitor.getInfo();
-		var currentMoveBarLevel = info.timeToRecovery / 10;
-
-		if (currentMoveBarLevel < 1) {
-			currentMoveBarLevel = 1;
-		}
+		var currentMoveBarLevel = (info.timeToRecovery == null || info.timeToRecovery < 0 ? 0 : info.timeToRecovery) / 10;
 
 		// Calculate current width here, now that DC is accessible.
 		// Balance head/tail positions in full width mode.
@@ -78,7 +74,7 @@ class MoveBar extends Ui.Drawable {
 
 			// Draw bars vertically centred on mY.
 			drawBars(dc, mX, mY - (mHeight / 2),  currentMoveBarLevel);
-		}		
+		}
 	}
 
 	(:buffered)
@@ -94,7 +90,7 @@ class MoveBar extends Ui.Drawable {
 			mLastMoveBarLevel = currentMoveBarLevel;
 			mBufferNeedsRedraw = true;
 		}
-		
+
 		if (mBufferNeedsRedraw) {
 			var bufferDc = mBuffer.getDc();
 
